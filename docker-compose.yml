@@ -1,9 +1,9 @@
 version: '3'
 services:
   ssh-reverse-tunnel:
-    image: ssh-reverse-tunnel
+    image: ssh-tunnel
     build: ./
-    container_name: ssh-reverse-tunnel
+    container_name: ssh-tunnel
     restart: always
     ports:
       - "2222:22"
