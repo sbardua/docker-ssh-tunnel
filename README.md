@@ -9,17 +9,25 @@ In order to use this compose file (docker-compose.yml) you must have:
 
 1. Spin up a Linux VM in your favorite cloud for all this goodness to live
 
+    - Azure
+
+        See `create-azure-vm.sh`
+
+    - AWS
+
+        TBD 
+
 2. Head over to https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion and get docker-compose-letsencrypt-nginx-proxy-companion up and running
 
 3. Clone this repository:
 
 ```bash
-git clone https://github.com/sbardua/docker-ssh-tunnel.git
+git clone https://github.com/sbardua/tunnelingus.git
 ```
 
 4. Make a copy of `.env.sample` and rename it to `.env`:
 
-Update this file with your preferences.
+    Update this file with your preferences.
 
 ```
 #
@@ -64,9 +72,7 @@ autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -
 
 ## Credits
 
-Without the repositories below this project wouldn't be possible.
-
-Credits goes to:
+Credits go to:
 - docker-compose-letsencrypt-nginx-proxy-companion [@evertramos](https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion)
 - docker-https-ssh-tunnel [@jvranish](https://github.com/jvranish/docker-https-ssh-tunnel)
 - nginx-proxy [@jwilder](https://github.com/jwilder/nginx-proxy)
