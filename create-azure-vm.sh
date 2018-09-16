@@ -1,5 +1,7 @@
 #!/bin/bash
 
+authorized_keys=$1
+
 # Create a resource group.
 az group create --name tunnelingus --location westus2
 
@@ -79,16 +81,20 @@ az vm create \
   --generate-ssh-keys
 
 # Clone this repo to the VM.
-az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts 'git clone https://github.com/sbardua/tunnelingus.git /opt/tunnelingus'
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "git clone https://github.com/sbardua/tunnelingus.git /opt/tunnelingus"
 
 # Run setup script.
-az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts '/opt/tunnelingus/setup-azure-vm.sh $1' --parameters $fqdn
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "/opt/tunnelingus/setup-azure-vm.sh $fqdn"
 
-# TODO: Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
+# Copy public key.
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "echo $authorized_keys > /opt/tunnelingus/authorized_keys"
 
 # Start the reverse SSH tunnel.
-#az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts '/opt/tunnelingus/start.sh'
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "/opt/tunnelingus/start.sh"
 
+echo
+echo "Done."
+echo
 echo "Run the following from the local system you will be tunneling from:"
 echo
 echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@$fqdn"

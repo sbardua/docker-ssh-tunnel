@@ -20,7 +20,7 @@ A set of Docker containers for setting up an HTTPS endpoint that reverse ssh por
         ./create-azure-vm.sh
         ```
 
-    4. Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
+    4. Add public SSH keys of the local system you will be tunneling from to the authorized_keys on the server
 
     5. Run the start script
 
@@ -78,7 +78,7 @@ A set of Docker containers for setting up an HTTPS endpoint that reverse ssh por
     LETSENCRYPT_TEST=false
     ```
 
-6. Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
+6. Add public SSH keys of the local system you will be tunneling from to the authorized_keys on the server
 
 7. Run the start script
 
