@@ -17,6 +17,9 @@ done
 # Create a public IP address.
 az network public-ip create --resource-group tunnelingus --name tunnelingus-ip --dns-name $dnsname
 
+# Save the FQDN.
+fqdn=$(az network public-ip show -g tunnelingus -n tunnelingus-ip --query "{fqdn: dnsSettings.fqdn}" --out tsv)
+
 # Create a network security group.
 az network nsg create --resource-group tunnelingus --name tunnelingus-nsg
 
@@ -75,7 +78,19 @@ az vm create \
   --admin-username tunnelingus \
   --generate-ssh-keys
 
-# Setup the VM.
-az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts @./setup-azure-vm.sh
+# Clone this repo to the VM.
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts 'git clone https://github.com/sbardua/tunnelingus.git /opt/tunnelingus'
+
+# Run setup script.
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts '/opt/tunnelingus/setup-azure-vm.sh $1' --parameters $fqdn
+
+# TODO: Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
+
+# Start the reverse SSH tunnel.
+#az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts '/opt/tunnelingus/start.sh'
+
+echo "Run the following from the local system you will be tunneling from:"
+echo
+echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@$fqdn"
 
 exit 0

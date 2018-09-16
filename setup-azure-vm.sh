@@ -1,5 +1,9 @@
 #!/bin/bash
 
+fqdn=$1
+
+echo "FQDN: $fqdn"
+
 apt-get update && apt-get -y upgrade
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -19,14 +23,12 @@ cp /opt/docker-compose-letsencrypt-nginx-proxy-companion/.env.sample /opt/docker
 
 mkdir -p /opt/nginx/data
 
-sed -i 's+/path/to/your/nginx/data+/opt/nginx/data+g' /opt/docker-compose-letsencrypt-nginx-proxy-companion/.env
+sed -i 's+NGINX_FILES_PATH=/path/to/your/nginx/data+NGINX_FILES_PATH=/opt/nginx/data+g' /opt/docker-compose-letsencrypt-nginx-proxy-companion/.env
 
 cd /opt/docker-compose-letsencrypt-nginx-proxy-companion && ./start.sh
 
-git clone https://github.com/sbardua/tunnelingus.git /opt/tunnelingus
-
 cp /opt/tunnelingus/.env.sample /opt/tunnelingus/.env
 
-sed -i 's+LETSENCRYPT_HOST=example.com+LETSENCRYPT_HOST=example.com+g' /opt/tunnelingus/.env
+sed -i "s+LETSENCRYPT_HOST=example.com+LETSENCRYPT_HOST=$fqdn+g" /opt/tunnelingus/.env
 
 exit 0
