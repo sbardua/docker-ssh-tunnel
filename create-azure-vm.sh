@@ -1,6 +1,7 @@
 #!/bin/bash
 
 authorized_keys=$1
+email=$2
 
 # Create a resource group.
 az group create --name tunnelingus --location westus2
@@ -84,7 +85,7 @@ az vm create \
 az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "git clone https://github.com/sbardua/tunnelingus.git /opt/tunnelingus"
 
 # Run setup script.
-az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "/opt/tunnelingus/setup-azure-vm.sh $fqdn"
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "/opt/tunnelingus/setup-azure-vm.sh $fqdn $email"
 
 # Copy public key.
 az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "echo $authorized_keys > /opt/tunnelingus/authorized_keys"
