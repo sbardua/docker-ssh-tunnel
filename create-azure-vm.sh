@@ -96,8 +96,12 @@ az vm run-command invoke --resource-group tunnelingus --name tunnelingus --comma
 echo
 echo "Done."
 echo
-echo "Run the following from the local system you will be tunneling from:"
+echo "Run the following from the local system you will be tunelling from to verify the host key and check that the public key is setup correctly:"
 echo
-echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@$fqdn"
+echo "ssh -p 2222 tunnelingus@$fqdn"
+echo
+echo "Then run the following to connect to your tunnel using autossh to ensure the tunnel stays up permanently:"
+echo
+echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:80 -p 2222 tunnelingus@$fqdn"
 
 exit 0

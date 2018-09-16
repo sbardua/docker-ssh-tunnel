@@ -20,12 +20,18 @@ A set of Docker containers for setting up an HTTPS endpoint that reverse ssh por
     ./create-azure-vm.sh "$(ssh -t user@hostname 'cat ~/.ssh/id_ed25519.pub')" 'you@example.com'
     ```
 
-4. Connect to your tunnel from your local machine
+4. SSH to the remote tunnel from the local system to verify the host key and check that the public key is setup correctly
+
+    ```bash
+    ssh -p 2222 tunnelingus@your-public-fqdn.com
+    ```
+
+5. Connect to your tunnel from your local machine using autossh to ensure the tunnel stays up permanently
 
     ```bash
     sudo apt install autossh
 
-    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@your-public-fqdn.com
+    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:80 -p 2222 tunnelingus@your-public-fqdn.com
     ```
 
 ## AWS
