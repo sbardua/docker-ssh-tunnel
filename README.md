@@ -4,25 +4,33 @@ A set of Docker containers for setting up an HTTPS endpoint that reverse ssh por
 
 # Automated Scripted Setup
 
-- Azure
+## Azure
 
-    1. Install Azure CLI 2.0 (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+1. Install Azure CLI 2.0 (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
     
-    2. Clone this repository:
+2. Clone this repository:
 
-        ```bash
-        git clone https://github.com/sbardua/tunnelingus.git
-        ```
-    
-    3. Run the create script, passing in the public SSH key of the local system you will be tunneling from as well as your email address for Let's Encrypt notifications
-    
-        ```bash
-        ./create-azure-vm.sh "$(cat ~/.ssh/id_ed25519.pub)" "you@example.com"
-        ```
+    ```bash
+    git clone https://github.com/sbardua/tunnelingus.git
+    ```
 
-- AWS
+3. Run the create script, passing in the public SSH key of the local system you will be tunneling from as well as your email address for Let's Encrypt notifications (optional)
 
-    1. TBD
+    ```bash
+    ./create-azure-vm.sh "$(ssh -t user@hostname 'cat ~/.ssh/id_ed25519.pub')" 'you@example.com'
+    ```
+
+4. Connect to your tunnel from your local machine
+
+    ```bash
+    sudo apt install autossh
+
+    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@your-public-fqdn.com
+    ```
+
+## AWS
+
+TBD
 
 # Manual Setup
 
