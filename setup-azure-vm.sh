@@ -2,8 +2,6 @@
 
 fqdn=$1
 
-echo "FQDN: $fqdn"
-
 apt-get update && apt-get -y upgrade
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -

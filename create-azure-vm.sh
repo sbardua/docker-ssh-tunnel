@@ -90,7 +90,7 @@ az vm run-command invoke --resource-group tunnelingus --name tunnelingus --comma
 az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "echo $authorized_keys > /opt/tunnelingus/authorized_keys"
 
 # Start the reverse SSH tunnel.
-az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "/opt/tunnelingus/start.sh"
+az vm run-command invoke --resource-group tunnelingus --name tunnelingus --command-id RunShellScript --scripts "cd /opt/tunnelingus && ./start.sh"
 
 echo
 echo "Done."
