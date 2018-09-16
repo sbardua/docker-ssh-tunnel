@@ -1,78 +1,101 @@
-## Prerequisites
+# Reverse SSH Tunneling Web Proxy using Docker, NGINX and Let's Encrypt
 
-In order to use this compose file (docker-compose.yml) you must have:
+A set of Docker containers for setting up an HTTPS endpoint that reverse ssh port forward's to a local port on a system behind your firewall/NAT.
 
-1. docker (https://docs.docker.com/engine/installation/)
-2. docker-compose (https://docs.docker.com/compose/install/)
+# Automated Scripted Setup
 
-## How to use it
+- Azure
 
-1. Spin up a Linux VM in your favorite cloud for all this goodness to live
+    1. Install Azure CLI 2.0 (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+    
+    2. Clone this repository:
 
-    - Azure
+        ```bash
+        git clone https://github.com/sbardua/tunnelingus.git
+        ```
+    
+    3. Run the create script
+    
+        ```bash
+        ./create-azure-vm.sh
+        ```
 
-        See `create-azure-vm.sh`
+    4. Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
 
-    - AWS
+    5. Run the start script
 
-        TBD 
+        ```bash
+        ./start.sh
+        ```
 
-2. Head over to https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion and get docker-compose-letsencrypt-nginx-proxy-companion up and running
+- AWS
 
-3. Clone this repository:
+    1. TBD
 
-```bash
-git clone https://github.com/sbardua/tunnelingus.git
-```
+# Manual Setup
 
-4. Make a copy of `.env.sample` and rename it to `.env`:
+1. Spin up a Linux VM in your favorite cloud
+
+2. Install Docker and Docker Compose
+
+    - docker (https://docs.docker.com/install/)
+    - docker-compose (https://docs.docker.com/compose/install/)
+
+3. Head over to https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion and get docker-compose-letsencrypt-nginx-proxy-companion up and running
+
+4. Clone this repository:
+
+    ```bash
+    git clone https://github.com/sbardua/tunnelingus.git
+    ```
+
+5. Make a copy of `.env.sample` and rename it to `.env`:
 
     Update this file with your preferences.
 
-```
-#
-# Network
-#
-# This needs to match the value used when setting up docker-compose-letsencrypt-nginx-proxy-companion
-NETWORK=webproxy
+    ```bash
+    #
+    # Network
+    #
+    # This needs to match the value used when setting up    docker-compose-letsencrypt-nginx-proxy-companion
+    NETWORK=webproxy
 
-#
-# Hostname
-#
-# This is the public DNS name of your server
-LETSENCRYPT_HOST=example.com
+    #
+    # Hostname
+    #
+    # This is the public DNS name of your server
+    LETSENCRYPT_HOST=example.com
 
-#
-# Email
-#
-LETSENCRYPT_EMAIL=you@example.com
+    #
+    # Email
+    #
+    LETSENCRYPT_EMAIL=you@example.com
 
-#
-# Test
-#
-# If true, Let's Encrypt will issue untrusted test certificates
-LETSENCRYPT_TEST=false
-```
+    #
+    # Test
+    #
+    # If true, Let's Encrypt will issue untrusted test certificates
+    LETSENCRYPT_TEST=false
+    ```
 
-5. Add public SSH keys to authorize_keys
+6. Add public SSH keys of the local system you will be tunneling from to the authorize_keys on the server
 
-6. Run the start script
+7. Run the start script
 
-```bash
-./start.sh
-```
+    ```bash
+    ./start.sh
+    ```
 
-7. Connect to your tunnel from your local machine
+8. Connect to your tunnel from your local machine
 
-```bash
-sudo apt install autossh
+    ```bash
+    sudo apt install autossh
 
-autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnel@example.com
-```
+    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@your-public-fqdn.com
+    ```
 
 ## Credits
 
-Credits go to:
 - docker-compose-letsencrypt-nginx-proxy-companion [@evertramos](https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion)
 - docker-https-ssh-tunnel [@jvranish](https://github.com/jvranish/docker-https-ssh-tunnel)
 - nginx-proxy [@jwilder](https://github.com/jwilder/nginx-proxy)
