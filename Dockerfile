@@ -15,11 +15,11 @@ RUN apk --update add openssh \
 
 RUN \
     passwd -d root && \
-    adduser -D -s /bin/ash tunnel && \
-    passwd -u tunnel && \
-    chown -R tunnel:tunnel /home/tunnel && \
+    adduser -D -s /bin/ash tunnelingus && \
+    passwd -u tunnelingus && \
+    chown -R tunnelingus:tunnelingus /home/tunnelingus && \
     ssh-keygen -A
 
-COPY authorized_keys /home/tunnel/.ssh/authorized_keys
+COPY authorized_keys /home/tunnelingus/.ssh/authorized_keys
 
 CMD /usr/sbin/sshd -D
