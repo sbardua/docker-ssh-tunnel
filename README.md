@@ -1,14 +1,14 @@
 # Reverse SSH Tunneling Web Proxy using Docker, NGINX and Let's Encrypt
 
-A set of Docker containers for setting up an HTTPS endpoint that reverse ssh port forward's to a local port on a system behind your firewall/NAT.
+A set of Docker containers for setting up an HTTPS endpoint that reverse ssh port forward's to a local port on a system behind your firewall/NAT.  Endpoint TLS certificates are automatically managed via Let's Encrypt.
 
-# Automated Scripted Setup
+# Scripted Setup
 
 ## Azure
 
 1. Install Azure CLI 2.0 (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
     
-2. Clone this repository:
+2. Clone this repository
 
     ```bash
     git clone https://github.com/sbardua/tunnelingus.git
@@ -49,7 +49,7 @@ TBD
 
 3. Head over to https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion and get docker-compose-letsencrypt-nginx-proxy-companion up and running
 
-4. Clone this repository:
+4. Clone this repository
 
     ```bash
     git clone https://github.com/sbardua/tunnelingus.git
@@ -92,12 +92,18 @@ TBD
     ./start.sh
     ```
 
-8. Connect to your tunnel from your local machine
+8. SSH to the remote tunnel from the local system to verify the host key and check that the public key is setup correctly
+
+    ```bash
+    ssh -p 2222 tunnelingus@your-public-fqdn.com
+    ```
+
+9. Connect to your tunnel from your local machine using autossh to ensure the tunnel stays up permanently
 
     ```bash
     sudo apt install autossh
 
-    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@your-public-fqdn.com
+    autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:80 -p 2222 tunnelingus@your-public-fqdn.com
     ```
 
 ## Credits

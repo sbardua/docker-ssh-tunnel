@@ -26,14 +26,14 @@ fqdn=$(az network public-ip show -g tunnelingus -n tunnelingus-ip --query "{fqdn
 # Create a network security group.
 az network nsg create --resource-group tunnelingus --name tunnelingus-nsg
 
-# Create an inbound port rule for SSH.
-az network nsg rule create \
-  --resource-group tunnelingus \
-  --nsg-name tunnelingus-nsg \
-  --name ssh-inbound \
-  --protocol tcp \
-  --priority 1000 \
-  --destination-port-range 22
+# Create an inbound port rule for SSH (disabled by default, uncomment to enable).
+#az network nsg rule create \
+#  --resource-group tunnelingus \
+#  --nsg-name tunnelingus-nsg \
+#  --name ssh-inbound \
+#  --protocol tcp \
+#  --priority 1000 \
+#  --destination-port-range 22
 
 # Create an inbound port rule for our tunnel.
 az network nsg rule create \
@@ -44,7 +44,7 @@ az network nsg rule create \
   --priority 1010 \
   --destination-port-range 2222
 
-# Create an inbound port rule for HTTP.
+# Create an inbound port rule for HTTP (this is required by Let's Encrypt for HTTP challenge and is redirected to port 443 by nginx).
 az network nsg rule create \
   --resource-group tunnelingus \
   --nsg-name tunnelingus-nsg \
