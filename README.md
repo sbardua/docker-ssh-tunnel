@@ -34,6 +34,8 @@ A set of Docker containers for setting up an HTTPS endpoint that reverse ssh por
     autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:80 -p 2222 tunnelingus@your-public-fqdn.com
     ```
 
+6. Browsing to http://your-public-fqdn.com should redirect to HTTPS automatically with a valid TLS certificate from Let's Encrypt. BOOYA!
+
 ## AWS
 
 TBD
