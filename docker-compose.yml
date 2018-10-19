@@ -10,6 +10,7 @@ services:
     environment:
       - VIRTUAL_HOST=${LETSENCRYPT_HOST}
       - VIRTUAL_PORT=8080 # needs to be higher than 1024 for ssh to be able to reverse forward
+      - VIRTUAL_PROTO=https
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
