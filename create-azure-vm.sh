@@ -136,7 +136,7 @@ echo "ssh -p 2222 tunnelingus@$fqdn"
 echo
 echo "Then run the following to connect to your tunnel using autossh to ensure the tunnel stays up permanently:"
 echo
-echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:80 -p 2222 tunnelingus@$fqdn"
+echo "sudo apt-get -y install autossh && autossh -M 20000 -f -nNT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ConnectTimeout=5 -g -R 8080:localhost:8123 -p 2222 tunnelingus@$fqdn"
 echo
 echo "Browsing to http://$fqdn should redirect to HTTPS automatically with a valid TLS certificate from Let's Encrypt"
 echo
